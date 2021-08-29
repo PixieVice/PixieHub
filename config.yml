@@ -1,0 +1,48 @@
+################################
+# PixieHub by the PixieWorkshop#
+################################
+
+#-- Options --#
+UseJoinFly: true # This feature will only work on players with the 'pixie.joinfly' permission #
+MessageOnHub: true
+TeleportOnJoin: true
+UseCustomJoinMessage: true
+UseDoubleJump: true
+DisableFunctions:
+    item-drop: true # override permission pixie.override.id #
+    item-pickup: true # override permission pixie.override.ipu #
+    player-hunger: true # this disabled a player from lossing hunger #
+    player-health: true # this disables a player from taking damage #
+
+CommandOptions: # all of these commands teleport the player to the hub location. if you change one of these settings you will need to restart the server, reloading the config will not apply these changes #
+    hub: true
+    spawn: true
+    stuck: true
+    lobby: false
+    l: false
+    custom-help-command:
+        use: true
+        lines:
+        - '&7----------MyHub----------'
+        - '&cExample. how cool!'
+        - '&7-------------------------'
+
+#-- SilentJoin --#
+# Players with the permission 'pixie.silentjoin' will not broadcast a join message upon joining the server #
+UseSilentJoin: true
+
+#-- Chat --#
+# Player with the permission 'pixie.chat.bypass' will bypass the chat cooldown #
+UseChatFilter: true
+UseChatCooldown: true
+CooldownTimer: 3 # In seconds #
+
+#-- JumpPads --#
+JumpPads:
+    jump-sound: true # allow jump sound on jumppad use. #
+    jump-effect: true # allow particle effect on jumppad use. #
+    disable-fall-damage: true # if player-heath is true, this does not matter. #
+    block: SLIME_BLOCK # automatically activated when a player walks on this block #
+
+# Do Not Change -_- #
+config-version: 2.0
