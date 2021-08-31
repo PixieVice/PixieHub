@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import net.pixievice.pixiehub.ChatUtils;
 import net.pixievice.pixiehub.Main;
 import net.pixievice.pixiehub.ReferanceLang;
+import net.pixievice.pixiehub.events.ServerPing;
 import net.pixievice.pixiehub.files.FileUpdaters;
 import net.pixievice.pixiehub.files.Lang;
 import net.pixievice.pixiehub.files.PlayersConfig;
@@ -17,17 +18,17 @@ import net.pixievice.pixiehub.holograms.HoloManager;
 import net.pixievice.pixiehub.managers.MC;
 
 public class MainCommands implements CommandExecutor {
-
-	MC mc = new MC();
-	HoloManager hm = new HoloManager();
-	FileUpdaters fu = new FileUpdaters();
-	ReferanceLang rl = new ReferanceLang();
   
   private Main main;
   
   public MainCommands(Main main) {
     this.main = main;
   }
+  
+	MC mc = new MC();
+	HoloManager hm = new HoloManager();
+	FileUpdaters fu = new FileUpdaters();
+	ReferanceLang rl = new ReferanceLang();
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     String boarder = new String(ChatUtils.chat("&d--------------------"));
@@ -38,25 +39,25 @@ public class MainCommands implements CommandExecutor {
     if (args.length == 1 && args[0].equalsIgnoreCase("silentjoin")) {
     if (player.hasPermission("pixie.silentjoin")) {
     if (silentjoin.booleanValue()) {
-        sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.sjd()));
+        sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.sjd(player)));
         PlayersConfig.get().set("Players." + player.getUniqueId() + ".silentjoin", Boolean.valueOf(false));
         PlayersConfig.save();
     } else if (!silentjoin.booleanValue()) {
-        sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.sje()));
+        sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.sje(player)));
         PlayersConfig.get().set("Players." + player.getUniqueId() + ".silentjoin", Boolean.valueOf(true));
         PlayersConfig.save();
     } 
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
     } 
     } else if (args.length == 1 && args[0].equalsIgnoreCase("sethub")) {
     if (player.hasPermission("pixie.sethub")) {
     	
     	mc.setHub(player);
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatehub()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatehub(player)));
           
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
     } 
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
     if (player.hasPermission("pixie.reload")) {
@@ -67,7 +68,7 @@ public class MainCommands implements CommandExecutor {
         hm.reloadStands();
         
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
     } 
     } else if (args.length == 2 && args[0].equalsIgnoreCase("migratehub")) {
     if (player.hasPermission("pixie.migratehub")) {
@@ -79,13 +80,13 @@ public class MainCommands implements CommandExecutor {
         player.sendMessage(ChatUtils.chat(rl.prefix() + "&aDone!"));
              
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound(player)));
     } 
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound(player)));
     } 
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
     } 
     } else if (args.length == 2 && args[0].equalsIgnoreCase("reset")) {
     	
@@ -109,6 +110,27 @@ public class MainCommands implements CommandExecutor {
     }
     }
     }
+    } else if (args.length == 1 && args[0].equalsIgnoreCase("maintenance")) {
+    	if (player.hasPermission("pixie.maintenance.admin")) {
+    	if (ServerPing.maintenanceMode == false) {
+    		ServerPing.maintenanceMode = true;
+    		
+    		for (Player notstaff : Bukkit.getOnlinePlayers()) {
+    		if (!notstaff.hasPermission("pixie.maintenance.admin")) {
+    				String mkick = main.getConfig().getString("ServerSettings.maintenance-kick");
+    				notstaff.kickPlayer(ChatUtils.chat(mkick));
+    		}	
+    		}
+    		
+    		player.sendMessage(ChatUtils.chat(rl.prefix() + rl.enableMaintenance()));
+
+    	} else {
+    		ServerPing.maintenanceMode = false;
+    		player.sendMessage(ChatUtils.chat(rl.prefix() + rl.disableMaintenance()));
+    }
+    } else {
+    	player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
+    }
     } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
     if (player.hasPermission("pixie.help")) {
     	
@@ -118,10 +140,11 @@ public class MainCommands implements CommandExecutor {
         player.sendMessage(ChatUtils.chat("&e/PWarp Help &7| displayes the warp help text."));
     	player.sendMessage(ChatUtils.chat("&e/PHolo Help &7| displays the hologram help text."));
     	player.sendMessage(ChatUtils.chat("&e/PJP Help &7| displays the jump pad help text."));
+    	player.sendMessage(ChatUtils.chat("&e/PTeleport <player> &7| teleport to a player."));
     	player.sendMessage(ChatUtils.chat("&e/PHub Sethub &7| changes the hub location to your location."));
     	player.sendMessage(ChatUtils.chat("&e/PHub MigrateHub <warp> &7| changes the hub location to a warp location."));
     	player.sendMessage(ChatUtils.chat("&e/PHub SilentJoin &7enabes/disables your ability to join silently."));
-    	player.sendMessage(ChatUtils.chat("&e/PTeleport <player> &7| teleport to a player."));
+    	player.sendMessage(ChatUtils.chat("&e/PHub Maintenance &7| enables/disables the servers maintenance mode."));
     	player.sendMessage(ChatUtils.chat("&e/PHub Reload &7Reloads files."));
     	player.sendMessage(ChatUtils.chat("&e/Phub Reset <config/lang/all> &7| Resets configs to the version defaults."));
         player.sendMessage("");
@@ -134,10 +157,10 @@ public class MainCommands implements CommandExecutor {
     	          
     	player.sendMessage(boarder);
     } else {
-    	player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+    	player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
     } 
     } else {
-        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknown()));
+        player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknown(player)));
     }
     } else if (args.length == 1 && args[0].equalsIgnoreCase("reload")) {
     	
@@ -165,7 +188,25 @@ public class MainCommands implements CommandExecutor {
     }
   	}
     	
-    } else {
+    } else if (args.length == 1 && args[0].equalsIgnoreCase("maintenance")) {
+    	if (ServerPing.maintenanceMode == false) {
+    		ServerPing.maintenanceMode = true;
+    		
+    		for (Player notstaff : Bukkit.getOnlinePlayers()) {
+    		if (!notstaff.hasPermission("pixie.maintenance.admin")) {
+    				String mkick = main.getConfig().getString("ServerSettings.maintenance-kick");
+    				notstaff.kickPlayer(ChatUtils.chat(mkick));
+    		}	
+    		}
+    		
+    		sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.enableMaintenance()));
+
+    	} else {
+    		ServerPing.maintenanceMode = false;
+    		sender.sendMessage(ChatUtils.chat(rl.prefix() + rl.disableMaintenance()));
+    }
+    }
+    else {
     	Bukkit.getLogger().info(ChatUtils.chat(rl.prefix() + rl.notplayer()));
     }
     return true;

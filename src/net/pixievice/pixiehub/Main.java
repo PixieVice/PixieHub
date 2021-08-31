@@ -11,6 +11,9 @@ import net.pixievice.pixiehub.commands.JumpPadCommands;
 import net.pixievice.pixiehub.commands.MainCommands;
 import net.pixievice.pixiehub.commands.TeleportCommand;
 import net.pixievice.pixiehub.commands.WarpCommands;
+import net.pixievice.pixiehub.events.DisabledEvents;
+import net.pixievice.pixiehub.events.Events;
+import net.pixievice.pixiehub.events.ServerPing;
 import net.pixievice.pixiehub.files.FileManagers;
 import net.pixievice.pixiehub.files.Holos;
 import net.pixievice.pixiehub.holograms.HoloManager;
@@ -45,13 +48,15 @@ public class Main extends JavaPlugin {
 		fm.generatePads();
 		
 		Bukkit.getLogger().info(ChatUtils.chat("&dPixieHub Loaded!"));
-		Bukkit.getLogger().info(ChatUtils.chat("&7Discord: https://discord.gg/hAhZ4GqDmE"));
+		Bukkit.getLogger().info(ChatUtils.chat("&dDiscord: https://discord.gg/hAhZ4GqDmE"));
 		
 		this.getConfig().options().copyDefaults();
 		saveDefaultConfig();
 		
 		
 		Bukkit.getPluginManager().registerEvents(new Events(this), this);
+		Bukkit.getPluginManager().registerEvents(new DisabledEvents(this), this);
+		Bukkit.getPluginManager().registerEvents(new ServerPing(this), this);
 		getCommand("phub").setExecutor(new MainCommands(this));
 		getCommand("pwarp").setExecutor(new WarpCommands(this));
 		getCommand("pteleport").setExecutor(new TeleportCommand(this));

@@ -95,12 +95,17 @@ public class FileManagers {
 		Lang.get().addDefault("Hologram.near", "&aNearby holograms:");
 		Lang.get().addDefault("Hologram.none-near", "&cNo holograms found nearby.");
 		
+		//JumpPads//
 		Lang.get().addDefault("JumpPads.create", "&aYou have created a new jump pad named &7%name%&a!");
 		Lang.get().addDefault("JumpPads.remove", "&cYou have renoved a jump pad named &7%name%&c!");
 		Lang.get().addDefault("JumpPads.already-exists", "&cThis jump pad already exists!");
 		Lang.get().addDefault("JumpPads.none-exists", "&cThis jump pad does not exits!");
 		Lang.get().addDefault("JumpPads.update-sound", "&aUpdated the sound to &7%sound%&a!");
 		Lang.get().addDefault("JumpPads.update-particle", "&aUpdated the particle to &7%particle%&a!");
+		
+		//Maintenance//
+		Lang.get().addDefault("Maintenance.enable", "&cYou enabled maintenance mode! &7All players without the correct permission will be kicked.");
+		Lang.get().addDefault("Maintenance.disable", "&cYou disabled maintenance mode!");
 		
 		Lang.get().options().copyDefaults(true);
 		Lang.save();

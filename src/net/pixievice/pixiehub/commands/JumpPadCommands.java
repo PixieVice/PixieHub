@@ -43,9 +43,9 @@ public class JumpPadCommands implements CommandExecutor {
 				pm.addBlock(player, args[1], jumppad);
 					
 
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.createpad().replaceAll("%name%", args[1])));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.createpad(player).replaceAll("%name%", args[1])));
 			} else {
-					player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padalreadyexists()));
+					player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padalreadyexists(player)));
 			}
 			} catch (NumberFormatException e) { player.sendMessage(ChatUtils.chat(rl.prefix() + "&cVelocity & force must be a number.")); }
 			} else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
@@ -53,25 +53,25 @@ public class JumpPadCommands implements CommandExecutor {
 				pm.removeBlock(args[1]);
 				Pads.save();
 					
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.removepad().replaceAll("%name%", args[1])));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.removepad(player).replaceAll("%name%", args[1])));
 			} else {
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound()));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound(player)));
 			}
 			} else if (args.length == 3 && args[0].equalsIgnoreCase("setsound")) {
 			if (Pads.get().getConfigurationSection("JumpPads." + args[1]) != null) {
 				pm.modifySound(args[1], args[2]);
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatepadsounds().replaceAll("%sound%", args[2])));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatepadsounds(player).replaceAll("%sound%", args[2])));
 				player.sendMessage(ChatUtils.chat("&7(If the sound name was entered wrongly it will throw an error)"));
 			} else {
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound()));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound(player)));
 			}
 			} else if (args.length == 3 && args[0].equalsIgnoreCase("setparticle")) {
 			if (Pads.get().getConfigurationSection("JumpPads." + args[1]) != null) {
 				pm.modifyParticle(args[1], args[2]);
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatepadparticle().replaceAll("%particle%", args[2])));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.updatepadparticle(player).replaceAll("%particle%", args[2])));
 				player.sendMessage(ChatUtils.chat("&7(If the particle name was entered wrongly it will throw an error)"));
 			} else {
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound()));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.padnotfound(player)));
 			}
 			} else if (args.length == 4 && args[0].equalsIgnoreCase("setpower")) {
 			try {
@@ -90,12 +90,12 @@ public class JumpPadCommands implements CommandExecutor {
 				player.sendMessage(ChatUtils.chat("&e/PJP list"));
 				player.sendMessage(ChatUtils.chat(boarder));
 			} else {
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknownjp()));
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknownjp(player)));
 			}
 			
 			
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix()) + rl.noperm(player));
 		}
 		} else {
 			Bukkit.getLogger().info(ChatUtils.chat(rl.prefix() + rl.notplayer()));

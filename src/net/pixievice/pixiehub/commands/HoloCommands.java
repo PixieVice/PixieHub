@@ -26,17 +26,17 @@ import net.pixievice.pixiehub.files.Holos;
 import net.pixievice.pixiehub.holograms.HoloManager;
 
 public class HoloCommands implements CommandExecutor {
-  ReferanceLang rl = new ReferanceLang();
-  HoloManager hm = new HoloManager();
-  Holos hc = new Holos();
-  
-  DecimalFormat df = new DecimalFormat("0.00");
   
   Main main;
   
   public HoloCommands(Main main) {
     this.main = main;
   }
+  
+  ReferanceLang rl = new ReferanceLang();
+  HoloManager hm = new HoloManager();
+  Holos hc = new Holos();
+  DecimalFormat df = new DecimalFormat("0.00");
   
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
     String boarder = new String(ChatUtils.chat("&d--------------------"));
@@ -65,20 +65,20 @@ public class HoloCommands implements CommandExecutor {
               dataFile.save(holoFile);
             } catch (IOException iOException) {}
             this.hm.reloadStands();
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.createholo().replaceAll("%id%", number)));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.createholo(player).replaceAll("%id%", number)));
           } else {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidholocreate()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidholocreate(player)));
           } 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
           if (this.hm.removeStand(args[1])) {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.removeholo().replaceAll("%id%", args[1])));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.removeholo(player).replaceAll("%id%", args[1])));
           } else {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid(player)));
           } 
         } else if (args.length >= 2 && args[0].equalsIgnoreCase("addline")) {
           File file = new File(Bukkit.getServer().getPluginManager().getPlugin("PixieHub").getDataFolder() + "/holos/" + args[1] + ".yml");
           if (!file.exists()) {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid(player)));
             return false;
           } 
           if (args.length >= 2) {
@@ -86,33 +86,33 @@ public class HoloCommands implements CommandExecutor {
             String holo = "";
             for (int i = 2; i < args.length; i++)
               holo = String.valueOf(holo) + args[i] + " "; 
-            this.hm.addLine(sender, holo, id);
+            this.hm.addLine(player, holo, id);
           } 
         } else if (args.length == 3 && args[0].equalsIgnoreCase("removeline")) {
           File file = new File(Bukkit.getServer().getPluginManager().getPlugin("PixieHub").getDataFolder() + "/holos/" + args[1] + ".yml");
           if (!file.exists()) {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid(player)));
             return false;
           } 
-          this.hm.removeLine(sender, args[1], args[2]);
+          this.hm.removeLine(player, args[1], args[2]);
         } else if (args.length == 1 && args[0].equalsIgnoreCase("near")) {
           List<ArmorStand> near = this.hm.findNear(player.getLocation());
           if (near.size() == 0) {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.nonearholos()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.nonearholos(player)));
           } else {
             player.sendMessage(ChatUtils.chat(rl.prefix()));
           } 
           for (ArmorStand a : near) {
             TextComponent t = new TextComponent(String.valueOf(ChatUtils.chat("&dID: &7")) + a.getBoots().getItemMeta().getDisplayName() + ChatUtils.chat(".&d XYZ: &7"));
             TextComponent t2 = new TextComponent(ChatUtils.chat(String.valueOf(String.valueOf(this.df.format(a.getLocation().getX()))) + ", " + this.df.format(a.getLocation().getY()) + ", " + this.df.format(a.getLocation().getZ())));
-            t2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder(ChatUtils.chat(rl.hoverholochat()))).create()));
+            t2.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, (new ComponentBuilder(ChatUtils.chat(rl.hoverholochat(player)))).create()));
             t2.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/tp " + t2.getText().replace(",", "")));
             player.spigot().sendMessage(new BaseComponent[] { (BaseComponent)t, (BaseComponent)t2 });
           } 
         } else if (args.length == 2 && args[0].equalsIgnoreCase("movehere")) {
           File file = new File(Bukkit.getServer().getPluginManager().getPlugin("PixieHub").getDataFolder() + "/holos/" + args[1] + ".yml");
           if (!file.exists()) {
-            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid()));
+            player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.invalidhloid(player)));
             return false;
           } 
           YamlConfiguration configFile = YamlConfiguration.loadConfiguration(file);
@@ -124,7 +124,7 @@ public class HoloCommands implements CommandExecutor {
             configFile.save(file);
           } catch (IOException iOException) {}
           this.hm.reloadStands();
-          player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.movedholo().replaceAll("%id%", args[1])));
+          player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.movedholo(player).replaceAll("%id%", args[1])));
         } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
           player.sendMessage(ChatUtils.chat(boarder));
           player.sendMessage(ChatUtils.chat("&e/PHolo create &7<text>"));
@@ -135,10 +135,10 @@ public class HoloCommands implements CommandExecutor {
           player.sendMessage(ChatUtils.chat("&e/PHolo near"));
           player.sendMessage(ChatUtils.chat(boarder));
         } else {
-          player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.unknownholo()));
+          player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.unknownholo(player)));
         } 
       } else {
-        player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.noperm()));
+        player.sendMessage(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.noperm(player)));
       } 
     } else {
       Bukkit.getLogger().info(ChatUtils.chat(String.valueOf(rl.prefix()) + rl.notplayer()));

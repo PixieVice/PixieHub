@@ -32,19 +32,19 @@ public class HubCommand implements CommandExecutor {
 		Player player = (Player) sender;
 		if (player.hasPermission("pixie.hub")) {
 		if (HubConfig.get().getString("Hub.X").equals("")) {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.nohubloc()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.nohubloc(player)));
 		} else {
 				hub.hubTeleport(player);
 				if (moh == true) {
-					player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onhub()));
+					player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onhub(player)));
 					}
 				}
 			} else {
-				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknown()));	
+				player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknown(player)));	
 			}
 	
 		} else { 
-			Bukkit.getLogger().info(ChatUtils.chat(rl.prefix() + rl.unknown())); 
+			Bukkit.getLogger().info(ChatUtils.chat(rl.prefix() + rl.notplayer())); 
 		}
 		return true;
 	}

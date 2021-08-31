@@ -30,22 +30,22 @@ public class TeleportCommand implements CommandExecutor {
 		Player target = Bukkit.getPlayer(args[0]);
 		if (target != null) {	
 		if (target.getDisplayName().equals(player.getDisplayName())) {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.selfteleport()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.selfteleport(player)));
 		} else {
 			player.teleport(target.getLocation());
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onteleport().replaceAll("%target%", target.getDisplayName())));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onteleport(player).replaceAll("%target%", target.getDisplayName())));
 		}
 					
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.teleportnpo()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.teleportnpo(player)));
 		}
 				
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.teleportusage()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.teleportusage(player)));
 		}
 			
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
 		}
 		
 		} else {

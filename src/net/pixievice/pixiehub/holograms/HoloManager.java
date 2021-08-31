@@ -9,16 +9,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import net.pixievice.pixiehub.ChatUtils;
+import net.pixievice.pixiehub.Main;
 import net.pixievice.pixiehub.files.Holos;
 import net.pixievice.pixiehub.files.Lang;
 
@@ -42,9 +43,9 @@ public class HoloManager {
       stand.setGravity(false);
       stand.setVisible(false);
       stand.setCustomNameVisible(true);
-      stand.setCustomName(ChatUtils.chat(line.replace(" -", "")));
+      stand.setCustomName(ChatUtils.chat(line.replaceAll(" -", "")));
       stand.setBoots(boots);
-      Y += 0.3D;
+      Y += Main.getInstance().getConfig().getDouble("Holograms.spacing");
     } 
   }
   
@@ -58,8 +59,8 @@ public class HoloManager {
     return false;
   }
   
-  public void addLine(CommandSender sender, String newLine, String id) {
-    sender.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.addline")));
+  public void addLine(Player player, String newLine, String id) {
+    player.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.addline")));
     File standFile = new File(Bukkit.getServer().getPluginManager().getPlugin("PixieHub").getDataFolder() + "/holos/" + id + ".yml");
     YamlConfiguration configFile = YamlConfiguration.loadConfiguration(standFile);
     List<String> lines = configFile.getStringList("Lines");
@@ -71,7 +72,7 @@ public class HoloManager {
     reloadStands();
   }
   
-  public void removeLine(CommandSender sender, String id, String lineid) {
+  public void removeLine(Player player, String id, String lineid) {
     File standFile = new File(Bukkit.getServer().getPluginManager().getPlugin("PixieHub").getDataFolder() + "/holos/" + id + ".yml");
     YamlConfiguration configFile = YamlConfiguration.loadConfiguration(standFile);
     List<String> lines = configFile.getStringList("Lines");
@@ -79,7 +80,7 @@ public class HoloManager {
     try {
       lines.remove(index);
     } catch (IndexOutOfBoundsException e) {
-      sender.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.invalid-line")));
+      player.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.invalid-line")));
       return;
     } 
     configFile.set("Lines", lines);
@@ -87,7 +88,7 @@ public class HoloManager {
       configFile.save(standFile);
     } catch (IOException iOException) {}
     reloadStands();
-    sender.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.removeline")));
+    player.sendMessage(ChatUtils.chat(Lang.get().getString("Prefix") + Lang.get().getString("Hologram.removeline")));
   }
   
   public void generateStands() {

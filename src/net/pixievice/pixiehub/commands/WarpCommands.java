@@ -40,11 +40,11 @@ public class WarpCommands implements CommandExecutor {
 			player.sendMessage(ChatUtils.chat(rl.prefix() + "&aNew warp named &7" + args[1] + " &ahas set to your location!"));
 		
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpalreadyexists()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpalreadyexists(player)));
 		}
 						
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));	
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));	
 		}
 		
 		} else {
@@ -57,11 +57,11 @@ public class WarpCommands implements CommandExecutor {
 			player.sendMessage(ChatUtils.chat(rl.prefix()+ "&cWarp &7" + args[1] + " &chas been deleted!"));
 								
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound(player)));
 		}
 		
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
 		}
 		
 		} else {
@@ -70,14 +70,14 @@ public class WarpCommands implements CommandExecutor {
 		if (WarpsConfig.get().getConfigurationSection("Warps." + args[1]) != null) {
 
 			warps.warpTeleport(player, args[1]);	
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onwarp().replaceAll("%warp%", args[1])));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.onwarp(player).replaceAll("%warp%", args[1])));
 		
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.warpnotfound(player)));
 		}
 		
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.nowarpperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.nowarpperm(player)));
 		}
 		} else {
 		if (args.length == 1 && args[0].equalsIgnoreCase("warps")) {
@@ -88,7 +88,7 @@ public class WarpCommands implements CommandExecutor {
 			player.sendMessage(ChatUtils.chat("&7- &d" + key));
 		}
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
 		}
 		
 		} else {
@@ -104,11 +104,11 @@ public class WarpCommands implements CommandExecutor {
 			
 		} else {
 			
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.noperm(player)));
 		}
 		
 		} else {
-			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknownwarp()));
+			player.sendMessage(ChatUtils.chat(rl.prefix() + rl.unknownwarp(player)));
 		}
 		}
 		}
