@@ -3,18 +3,26 @@
 ################################
 
 #-- Options --#
-UseJoinFly: true # This feature will only work on players with the 'pixie.joinfly' permission #
-MessageOnHub: true
-TeleportOnJoin: true
-UseCustomJoinMessage: true
+# This feature will only work on players with the 'pixie.joinfly' permission #
+UseJoinFly: true
 UseDoubleJump: true
+UseCustomJoinMessage: true
+
+MessageOnHub: true
+TeleportOnVoid: true
+TeleportOnJoin: true
+
+#-- Disabled Functions --#
 DisableFunctions:
     item-drop: true # override permission pixie.override.id #
     item-pickup: true # override permission pixie.override.ipu #
     player-hunger: true # this disabled a player from lossing hunger #
     player-health: true # this disables a player from taking damage #
+    join-message: false
+    quit-message: false
 
-CommandOptions: # all of these commands teleport the player to the hub location. if you change one of these settings you will need to restart the server, reloading the config will not apply these changes #
+# all of these commands teleport the player to the hub location. if you change one of these settings you will need to restart the server, reloading the config will not apply these changes #
+CommandOptions:
     hub: true
     spawn: true
     stuck: true
@@ -37,12 +45,30 @@ UseChatFilter: true
 UseChatCooldown: true
 CooldownTimer: 3 # In seconds #
 
+#-- Holograms --#
+Holograms:
+    spacing: 0.3 # default, recommended not to go any lower that this #
+
 #-- JumpPads --#
 JumpPads:
-    jump-sound: true # allow jump sound on jumppad use. #
-    jump-effect: true # allow particle effect on jumppad use. #
-    disable-fall-damage: true # if player-heath is true, this does not matter. #
-    block: SLIME_BLOCK # automatically activated when a player walks on this block #
+# allow jump sound on jumppad use. #
+    jump-sound: true
+# allow particle effect on jumppad use. #
+    jump-effect: true
+# if player-heath is true, this does not matter. #
+    disable-fall-damage: true
+# automatically activated when a player walks on this block #
+    block: SLIME_BLOCK
+
+#-- Server Settings --#
+ServerSettings:
+    use: true # use serversettings #
+    max-players: 50
+
+    motd: '&d&lMy server uses PixieHub!                       &c ➥ [1.8-1.17]'
+    maintenance-motd: '&cThis server is down for maintenance!'
+    maintenance-kick: '&cThe server has entered maintenance mode.'
+    maintenance-disconnect: '&cYou can not join the server while it is in maintenance mode.'
 
 # Do Not Change -_- #
 config-version: 2.0
